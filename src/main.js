@@ -87,8 +87,8 @@ function updateball(ball) {
             bounce(go.walls[i], go.ball);
         }
     }
-/*
-    if(ball.l cation[0] < 0) {
+
+    if(ball.location[0] < 0) {
         ball.location[0] = 0;
         ball.vector[0] = -1 * ball.vector[0];
     } else if (ball.location[0] > 500) {
@@ -103,7 +103,7 @@ function updateball(ball) {
         ball.location[1] = 500;
         ball.vector[1] = -1 * ball.vector[1];
     }
-*/
+
 }
 
 function intersect(wall, ball) {
@@ -126,7 +126,7 @@ function bounce(wall, ball) {
                     wall[1] - wall[3]];
     // a dot b = ||a|| * b|| * cos theta == (a dot b) / (||a|| * ||b||) = cos theta, then remove arccos
     var theta = Math.acos (dotprod(wallvect, ball.vector) / (vecmag(wallvect) * vecmag(ball.vector)) );
-
+    
 }
 
 /**
