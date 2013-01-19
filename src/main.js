@@ -116,6 +116,14 @@ function intersect(wall, ball) {
     }
 }
 
+/**
+ * reflect incident vector i about the normal of surface vector s
+ */
+function reflect(s, i) {
+    var n = unitnormal(s);
+    var scalar = -2 * dotprod(i,n); //scalar multiplier for normal
+    return [i[0] - scalar * n[0], i[1] - scalar * n[1]];
+}
 
 /**
  * 
@@ -126,7 +134,6 @@ function bounce(wall, ball) {
                     wall[1] - wall[3]];
     // a dot b = ||a|| * b|| * cos theta == (a dot b) / (||a|| * ||b||) = cos theta, then remove arccos
     var theta = Math.acos (dotprod(wallvect, ball.vector) / (vecmag(wallvect) * vecmag(ball.vector)) );
-    
 }
 
 /**
@@ -141,4 +148,30 @@ function dotprod(v1, v2) {
  */
 function vecmag(v) {
     return Math.sqrt(v[0]*v[0] + v[1]*v[1]);
+}
+
+/**
+ * return a unit vector in the same direction of vector v
+ *     undefined if passed vector has magnitude of 0  
+ */
+function unitvec(v) {
+    var mag = vecmag(v);
+    if (mag == 0) {
+        return;
+    }
+    return [v[0] / mag, v[1] / mag];
+}
+
+/**
+ * simple normal vector generation
+ */
+function normal(v) {
+    return [-v[1], v[0]];
+}
+
+/**
+ * returns unit normal vector of vector v
+ */
+function unitnormal(v) {
+    return unitvec( normal(v) );
 }
