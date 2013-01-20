@@ -84,10 +84,13 @@ function updateball(ball) {
 
     for (var i = 0; i < go.walls.length; i++) {
         if (intersect(go.walls[i], go.ball)) {
-            bounce(go.walls[i], go.ball);
+            var reflection = intersect(go.walls[i], go.ball);
+            if (reflection) {
+                ball.vector = reflection;
+            }
         }
     }
-
+/*
     if(ball.location[0] < 0) {
         ball.location[0] = 0;
         ball.vector[0] = -1 * ball.vector[0];
@@ -103,7 +106,7 @@ function updateball(ball) {
         ball.location[1] = 500;
         ball.vector[1] = -1 * ball.vector[1];
     }
-
+*/
 }
 
 function intersect(wall, ball) {
@@ -112,7 +115,7 @@ function intersect(wall, ball) {
         (ball.location[0] > wall[1]) ||
         (ball.location[1] < wall[2]) ||
         (ball.location[1] > wall[3])) {
-        bounce(wall,ball);
+        return reflect([wall[2]-wall[0], wall[3]-wall[1]], ball.vector);
     }
 }
 
@@ -120,8 +123,11 @@ function intersect(wall, ball) {
  * reflect incident vector i about the normal of surface vector s
  */
 function reflect(s, i) {
-    var n = unitnormal(s);
-    var scalar = -2 * dotprod(i,n); //scalar multiplier for normal
+    var n = la2d.unitnormal(s);
+    var scalar = -2 * la2d.dotprod(i,n); //scalar multiplier for normal
+
+console.log(n, scalar);
+
     return [i[0] - scalar * n[0], i[1] - scalar * n[1]];
 }
 
@@ -130,48 +136,8 @@ function reflect(s, i) {
  */
 function bounce(wall, ball) {
     // [a2-a1,b2-b1]
-    var wallvect = [wall[0] - wall[2],
-                    wall[1] - wall[3]];
+    //var wallvect = [wall[0] - wall[2],
+    //                wall[1] - wall[3]];
     // a dot b = ||a|| * b|| * cos theta == (a dot b) / (||a|| * ||b||) = cos theta, then remove arccos
-    var theta = Math.acos (dotprod(wallvect, ball.vector) / (vecmag(wallvect) * vecmag(ball.vector)) );
-}
-
-/**
- * calculate dot product
- */
-function dotprod(v1, v2) {
-    return (v1[0] * v2[0]) + (v1[1] * v2[1]);
-}
-
-/**
- * calculate 2D vector magnitude
- */
-function vecmag(v) {
-    return Math.sqrt(v[0]*v[0] + v[1]*v[1]);
-}
-
-/**
- * return a unit vector in the same direction of vector v
- *     undefined if passed vector has magnitude of 0  
- */
-function unitvec(v) {
-    var mag = vecmag(v);
-    if (mag == 0) {
-        return;
-    }
-    return [v[0] / mag, v[1] / mag];
-}
-
-/**
- * simple normal vector generation
- */
-function normal(v) {
-    return [-v[1], v[0]];
-}
-
-/**
- * returns unit normal vector of vector v
- */
-function unitnormal(v) {
-    return unitvec( normal(v) );
+    //  var theta = Math.acos (dotprod(wallvect, ball.vector) / (vecmag(wallvect) * vecmag(ball.vector)) );
 }

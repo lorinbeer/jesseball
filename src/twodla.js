@@ -18,7 +18,7 @@
 
 /**
  * Simple Linear Algebra Math Library for JavaScript
- *   namespace wrapper object is TwoDee
+ *   namespace wrapper object is la2d
  *
  * Function List
  *  dotprod(j, k)
@@ -36,7 +36,7 @@
  * email: lorin@adobe.com
  */
 
-var TwoDee = {
+var la2d = {
 
     /**
      * calculate dot product
@@ -57,7 +57,7 @@ var TwoDee = {
      *     undefined if passed vector has magnitude of 0  
      */
     unitvec : function (j) {
-        var mag = vecmag(j);
+        var mag = la2d.vecmag(j);
         if (mag == 0) {
             return;
         }
@@ -75,6 +75,6 @@ var TwoDee = {
      * returns unit normal vector of vector v
      */
     unitnormal : function (j) {
-        return unitvec( normal(j) );
+        return la2d.unitvec( la2d.normal(j) );
     }
 }
