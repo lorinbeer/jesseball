@@ -32,6 +32,8 @@
  *  unitnorm(j)
  *    returns a unit vector normal to vector j
  *
+ *
+ *
  * author: Lorin Beer
  * email: lorin@adobe.com
  */
@@ -39,21 +41,34 @@
 var la2d = {
 
     /**
-     * calculate dot product
+     * calculate dot product of vectors j and k
      */
     dotprod : function (j,k) {
         return (j[0] * k[0]) + (j[1] * k[1]);
     },
 
     /**
-     * calculate 2D vector magnitude
+     * calculate the cross product of vectors j and k
      */
-    vecmag : function (j) {
-        return Math.sqrt(j[0]*j[0] + j[1]*j[1]);
+    crossprod : function (j,k) {
+        return j[0] * k[1] - j[1] * k[0];
     },
 
     /**
-     * return a unit vector in the same direction of vector v
+     * returns the euclidean norm, the magnitude of the vector from the origin to point p=(x,y)
+     */
+    hypot : function (x,y) {
+        return Math.sqrt(x*x + y*y);
+    },
+
+    /**
+     * calculate 2D vector magnitude
+     */
+    vecmag : function (j) {
+        return la2d.hypot(j[0],j[1]);
+    },
+
+    /*
      *     undefined if passed vector has magnitude of 0  
      */
     unitvec : function (j) {
@@ -76,5 +91,14 @@ var la2d = {
      */
     unitnormal : function (j) {
         return la2d.unitvec( la2d.normal(j) );
+    },
+
+   /**
+    * calculate minimum distance from point p to line ab
+    */
+    pointlinedistance : function (a,b,p) {
+        var j = [b[0]-a[0],b[1]-a[1]];
+        var num = Math.abs( la2d.crossprod(j, [p[0]-a[0],p[1]-a[1]]) );
+        return num / la2d.vecmag(j);
     }
 }
