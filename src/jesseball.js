@@ -23,6 +23,11 @@
 var JesseBall = {
     balls : [],
     walls : [],
+    canvas: -1,
+    initHandlers : function () {
+        JesseBall.canvas = document.getElementById('JesseBallCanvas');
+        console.log(JesseBall.canvas);
+    },
 
     /**
      * update function
