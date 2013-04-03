@@ -35,13 +35,16 @@ high score
 sarcasm generated
 */
 
+var JesseBallCanvasId = "";
 
 var settings = {
     arena : [500, 500]
 }
 
 
-function initGame() {
+function initGame(canvasId) {
+    JesseBallCanvasId = canvasId; 
+    console.log(canvasId, JesseBallCanvasId);
     JesseBall.initWalls(0,0,500,500);
 }
 
@@ -58,7 +61,7 @@ var go = {
 
 
 function mainloop() {   
-    var canvas=document.getElementById("maincanvas");
+    var canvas=document.getElementById(JesseBallCanvasId);
     var ctx=canvas.getContext('2d');
  
     updateball(go.ball);  
@@ -74,7 +77,7 @@ function mainloop() {
 }
 
 function drawarena() {
-    var canvas=document.getElementById("maincanvas");
+    var canvas=document.getElementById(JesseBallCanvasId);
     var ctx=canvas.getContext('2d');
     ctx.clearRect(0,0,500,500);
     ctx.lineWidth = 5;
@@ -82,7 +85,7 @@ function drawarena() {
 }
 
 function drawball() {
-    var canvas=document.getElementById("maincanvas");
+    var canvas=document.getElementById(JesseBallCanvasId);
     var ctx=canvas.getContext('2d');
     ctx.beginPath();
     ctx.arc(go.ball.position[0],
