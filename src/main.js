@@ -1,19 +1,3 @@
-/**
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
 /*
  Timer
  Score
@@ -34,9 +18,17 @@ excess shit
 high score 
 sarcasm generated
 */
+
+
 var settings = {
     arena : [500, 500]
 }
+
+
+function initGame() {
+    JesseBall.initWalls(0,0,500,500);
+}
+
 
 var go = {
     balls : [],
@@ -45,12 +37,8 @@ var go = {
         vector : [5.0,6.0],
         position : [85,475]
     },
-    // walls are defined by a two points, which are also interpreted as the extrema of a line segment 
-    walls : [[0, 0, settings.arena[0], 0], // top horizontal
-             [0, 0, 0, settings.arena[1]], // left vertical
-             [0, settings.arena[1], settings.arena[0], settings.arena[1] ], // bottom horizontal
-             [settings.arena[0], 0, settings.arena[0], settings.arena[1]] ] // right vertical
 }
+
 
 
 function mainloop() {   
@@ -65,6 +53,8 @@ function mainloop() {
  */
     drawarena();
     drawball();
+    
+    window.requestAnimFrame(mainloop);
 }
 
 function drawarena() {
@@ -93,20 +83,15 @@ function drawball() {
 }
 
 function updateball(ball) {
-    console.log("ball position: ", ball.position);
     ball.position[0] = ball.vector[0] + ball.position[0];
     ball.position[1] = ball.vector[1] + ball.position[1];
-    console.log("ball position updated: ", ball.position);
     // iterate through wall list
 
-    for (var i = 0; i < go.walls.length; i++) {
-        console.log("iteration: ", i);
-        var wall = go.walls[i];
-        if (intersect(go.walls[i], go.ball)) {
-            console.log("HIT!"); 
+    for (var i = 0; i < JesseBall.walls.length; i++) {
+        var wall = JesseBall.walls[i];
+        if (intersect(JesseBall.walls[i], go.ball)) {
             var wallvec = [wall[2]-wall[0],wall[1]-wall[3]];            
             ball.vector = reflect(wallvec, ball.vector);
-            console.log("ball vector ",ball.vector );
         }
     }
 }
@@ -117,7 +102,6 @@ function updateball(ball) {
 function intersect(wall, ball) {
     // if the wall array has more than 4 elements, someone's doing it wrong
     var dist = la2d.pointlinedistance( [wall[0],wall[1]], [wall[2],wall[3]], ball.position);
-    console.log('distance: ', dist, 'to wall: ', wall);
     if ( dist < ball.radius ) {
         return true;
     }
@@ -127,7 +111,6 @@ function intersect(wall, ball) {
  * reflect incident vector i about the normal of surface vector s
  */
 function reflect(s, i) {
-    console.log( "surface: ", s, " unit normal: ", la2d.unitnormal(s), " vector: ", i );
     var n = la2d.unitnormal(s);
     var scalar = 2 * la2d.dotprod(n,i); //scalar multiplier for normal
     var term = [scalar * n[0], scalar * n[1]];
@@ -144,3 +127,4 @@ function bounce(wall, ball) {
     // a dot b = ||a|| * b|| * cos theta == (a dot b) / (||a|| * ||b||) = cos theta, then remove arccos
     //  var theta = Math.acos (dotprod(wallvect, ball.vector) / (vecmag(wallvect) * vecmag(ball.vector)) );
 }
+
