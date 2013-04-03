@@ -27,6 +27,14 @@ var JesseBall = {
     initHandlers : function () {
         JesseBall.canvas = document.getElementById('JesseBallCanvas');
         console.log(JesseBall.canvas);
+        
+        // setup action handlers 
+
+        JesseBall.canvas.addEventListener('click',JesseBall.clickHandler);
+        var CanvasWrapper = document.getElementById('JessBallCanvasWrapper');
+        console.log(CanvasWrapper); 
+        CanvasWrapper.addEventListener('keydown',JesseBall.keyHandler,false);
+
     },
 
     /**
@@ -50,7 +58,16 @@ var JesseBall = {
                   [x, y, x, y+h], // left vertical
                   [x, y+h, x+w, y+h ], // bottom horizontal
                   [x+w, y, x+w, y+h]]; // right vertical
+    },
+
+
+    clickHandler : function (e) {
+        console.log(e);
+    },
+    keyHandler : function (e) {
+        console.log(e);
     }
+
 };
 
 
